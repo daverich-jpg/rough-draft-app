@@ -1,0 +1,137 @@
+/* Rough Draft app layer. Layout only; every colour, radius, shadow and type
+   size comes from the design system tokens. */
+
+body { background: var(--rd-surface-sunken); }
+@media (max-width: 520px) { body { background: var(--rd-bg); } }
+
+.app-shell {
+  position: relative; display: flex; flex-direction: column;
+  max-width: 480px; min-height: 100dvh; margin: 0 auto; background: var(--rd-bg);
+}
+.app-main { flex: 1; outline: none; }
+.app-nav { position: sticky; bottom: 0; z-index: var(--rd-z-nav); }
+.app-skip { position: absolute; left: 16px; top: -100px; z-index: 2000; }
+.app-skip:focus { top: 12px; }
+
+/* Spacing rhythm (gestalt proximity): 8 = related · 12 = items in a group · 32 = between groups.
+   20px side gutter everywhere so every screen edge lines up. */
+.app-screen { display: grid; align-content: start; gap: var(--rd-space-8); padding: var(--rd-space-3) var(--rd-space-5) var(--rd-space-12); }
+.app-screen > .app-header + * { margin-top: calc(var(--rd-space-3) - var(--rd-space-8)); } /* header hugs what it introduces */
+.app-section { display: grid; gap: var(--rd-space-3); }
+.app-section > h2:first-child { margin-bottom: calc(var(--rd-space-1) * -1); } /* label sits 8px from its content */
+.app-header { display: flex; align-items: center; gap: var(--rd-space-3); min-height: 56px; }
+.app-header > div > .rd-caption { display: block; margin-bottom: 2px; }
+.app-header__actions { display: flex; gap: var(--rd-space-2); }
+
+.app-link {
+  display: inline; padding: 0; margin: 0; border: 0; background: none; cursor: pointer;
+  font: inherit; font-weight: 700; color: var(--rd-text-link); text-decoration: underline; text-decoration-thickness: 2px; text-underline-offset: 3px;
+  min-height: 24px;
+}
+.app-link:hover { text-decoration-style: wavy; }
+
+.app-avatar-btn { padding: 0; border: 0; background: none; border-radius: 50%; cursor: pointer; display: grid; place-items: center; width: 48px; height: 48px; }
+
+/* Big tappable cards that lead somewhere */
+.app-cta { display: flex; align-items: center; justify-content: space-between; gap: var(--rd-space-4); width: 100%; text-align: left; font: inherit; border: 0; border-radius: var(--rd-radius-lg); padding: var(--rd-space-5); }
+.app-cta--tile { padding: var(--rd-space-3); padding-right: var(--rd-space-5); justify-content: flex-start; }
+.app-cta.rd-card--hero { color: var(--rd-text-on-hero); }
+
+
+.app-list { display: grid; gap: var(--rd-space-3); margin: 0; padding: 0; list-style: none; }
+.app-group { margin: 0; padding: 0; list-style: none; background: var(--rd-surface-raised); border-radius: var(--rd-radius-lg); box-shadow: var(--rd-shadow-sm); overflow: hidden; }
+.app-group > li + li { box-shadow: inset 0 1px 0 var(--rd-border-subtle); }
+.app-group__row {
+  display: flex; align-items: center; gap: var(--rd-space-3); width: 100%; min-height: 64px; padding: var(--rd-space-4) var(--rd-space-5);
+  text-align: left; font: inherit; color: var(--rd-text-strong); text-decoration: none; background: none; border: 0; cursor: pointer;
+  transition: background-color var(--rd-duration-fast);
+}
+.app-group__row:hover { background: var(--rd-surface-sunken); }
+.app-group__row:focus-visible { outline-offset: -3px; box-shadow: none; }
+.app-group__text { flex: 1; min-width: 0; display: grid; gap: 2px; }
+.app-group__meta { flex: none; font-size: var(--rd-text-caption); font-weight: 650; color: var(--rd-text-secondary); font-variant-numeric: tabular-nums; }
+.app-row { display: flex; align-items: center; gap: var(--rd-space-3); padding: var(--rd-space-4); color: var(--rd-text-strong); text-decoration: none; flex-wrap: wrap; }
+.app-next { display: grid; gap: var(--rd-space-3); }
+.app-sticky-actions { position: sticky; bottom: 84px; padding-top: var(--rd-space-2); }
+
+/* Onboarding */
+.app-onboard { display: grid; align-content: start; gap: var(--rd-space-6); min-height: 100dvh; max-width: 480px; margin: 0 auto; padding: var(--rd-space-5) var(--rd-space-5) var(--rd-space-8); background-color: var(--rd-bg); }
+/* hero: [headline + its annotation] [illustration, centred in the free space] [copy + action] */
+.app-onboard--hero { grid-template-rows: auto 1fr auto; align-content: stretch; gap: var(--rd-space-4); padding-top: var(--rd-space-10); background-color: var(--rd-bg); }
+.app-onboard--hero > svg { place-self: center; }
+.app-onboard__headline { position: relative; }
+.app-onboard__headline { padding-bottom: calc(var(--rd-space-12) + var(--rd-space-1)); } /* room for the 46px sticker under the last line */
+.app-onboard__headline .rd-sticker { position: absolute; right: 4px; bottom: 0; }
+.app-onboard__footer { display: grid; gap: var(--rd-space-5); }
+.app-honest { margin: 0; padding: 0; list-style: none; background: var(--rd-surface-raised); border-radius: var(--rd-radius-lg); box-shadow: var(--rd-shadow-sm); overflow: hidden; }
+.app-honest li { padding: var(--rd-space-4) var(--rd-space-5); font-size: var(--rd-text-body); line-height: 1.45; }
+.app-honest li + li { box-shadow: inset 0 1px 0 var(--rd-border-subtle); }
+
+/* Crisis card: tone 5. Flat, calm, no tilt, no motion. */
+.app-crisis {
+  display: grid; gap: var(--rd-space-3); padding: var(--rd-space-4);
+  background: var(--rd-info); color: var(--rd-on-info); border-radius: calc(var(--rd-radius-sm) + var(--rd-space-4)); /* concentric with its 10px buttons */
+}
+.app-crisis > :is(h2, h3, p):first-child { margin-top: var(--rd-space-1) !important; }
+.app-crisis__actions .rd-btn { border-radius: var(--rd-radius-sm); }
+.app-crisis a:not(.rd-btn) { color: inherit; font-weight: 750; }
+.app-crisis .app-link { color: inherit; justify-self: start; }
+.app-crisis__actions { display: grid; gap: var(--rd-space-2); margin-block: var(--rd-space-1); }
+.app-crisis__actions .rd-btn { justify-content: flex-start; white-space: normal; text-align: left; padding-block: var(--rd-space-2); }
+
+/* Remi mark: a plain letterform, deliberately *not* a character (D-M2) */
+.app-ai-mark {
+  flex: none; display: grid; place-items: center; width: 44px; height: 44px; border-radius: var(--rd-radius-sm);
+  background: var(--rd-surface-accent); color: var(--rd-text-on-accent);
+  font-family: var(--rd-font-display); font-size: 1.5rem; line-height: 1;
+}
+.app-ai-intro { display: flex; gap: var(--rd-space-3); align-items: flex-start; padding: var(--rd-space-4); border-radius: calc(var(--rd-radius-sm) + var(--rd-space-4)); background: var(--rd-surface-raised); box-shadow: var(--rd-shadow-sm); }
+
+/* Talk */
+.app-shell--talk { height: 100dvh; min-height: 0; }
+.app-shell--talk .app-main { min-height: 0; display: flex; }
+.app-talk { display: flex; flex-direction: column; flex: 1; min-height: 0; }
+.app-header--talk { padding: var(--rd-space-2) var(--rd-space-3) var(--rd-space-2) var(--rd-space-5); background: var(--rd-bg); box-shadow: 0 1px 0 var(--rd-border-subtle); flex-wrap: nowrap; }
+.app-header--talk .rd-tag { vertical-align: 3px; margin-left: 4px; }
+.app-thread { flex: 1; min-height: 0; overflow-y: auto; display: flex; flex-direction: column; gap: var(--rd-space-4); padding: var(--rd-space-5); overscroll-behavior: contain; }
+.app-talk-empty { display: grid; gap: var(--rd-space-4); margin-top: auto; }
+.app-demo { margin: 0; padding: var(--rd-space-2) var(--rd-space-3); border-radius: var(--rd-radius-sm); background: var(--rd-surface-warm); color: var(--rd-text-on-warm); font-size: var(--rd-text-body-sm); }
+
+.app-msg--me + .app-msg--me, .app-msg--ai + .app-msg--ai { margin-top: calc(var(--rd-space-1) - var(--rd-space-4)); } /* same sender: 4px */
+.app-msg { max-width: 86%; padding: var(--rd-space-3) var(--rd-space-4); border-radius: 18px; font-size: var(--rd-text-body); line-height: 1.5; white-space: pre-wrap; overflow-wrap: anywhere; }
+.app-msg--me { align-self: flex-end; background: var(--rd-bg-hero); color: var(--rd-text-on-hero); border-bottom-right-radius: 6px; }
+.app-msg--ai { align-self: flex-start; background: var(--rd-surface-raised); color: var(--rd-text-strong); border-bottom-left-radius: 6px; }
+.app-msg__who { display: block; margin-bottom: 4px; font-size: 0.75rem; font-weight: 800; letter-spacing: 0.04em; text-transform: uppercase; color: var(--rd-text-secondary); white-space: normal; }
+.app-msg__fail { display: flex; flex-wrap: wrap; align-items: center; gap: var(--rd-space-2); margin-top: var(--rd-space-2); font-size: var(--rd-text-body-sm); color: var(--rd-text-primary); white-space: normal; }
+.app-msg__fail > svg { color: var(--rd-error-text); }
+.app-concern { margin: 0; padding: var(--rd-space-3) var(--rd-space-4); border-radius: var(--rd-radius-sm); background: var(--rd-info); color: var(--rd-on-info); font-size: var(--rd-text-body-sm); }
+.app-concern .app-link { color: inherit; }
+
+.app-caret { display: inline-block; width: 8px; height: 1.05em; margin-left: 2px; vertical-align: -2px; background: currentColor; border-radius: 2px; animation: app-blink 1s steps(2, start) infinite; }
+.app-typing { display: inline-flex; gap: 5px; padding: 6px 2px; }
+.app-typing i { width: 8px; height: 8px; border-radius: 50%; background: var(--rd-text-secondary); animation: app-dot 1.1s var(--rd-ease-standard) infinite; }
+.app-typing i:nth-child(2) { animation-delay: 0.15s; }
+.app-typing i:nth-child(3) { animation-delay: 0.3s; }
+@keyframes app-blink { to { visibility: hidden; } }
+@keyframes app-dot { 0%, 80%, 100% { translate: 0 0; opacity: 0.5; } 40% { translate: 0 -5px; opacity: 1; } }
+@media (prefers-reduced-motion: reduce) { .app-caret, .app-typing i { animation: none; } }
+
+.app-composer {
+  position: relative; display: flex; align-items: flex-end; gap: var(--rd-space-2);
+  padding: var(--rd-space-3) var(--rd-space-5); background: var(--rd-bg); box-shadow: 0 -1px 0 var(--rd-border-subtle);
+}
+.app-composer .rd-btn--icon { border-radius: var(--rd-radius-full); } /* pill input + round button: one shape family */
+.app-composer__input { min-height: 48px; max-height: 160px; resize: none; field-sizing: content; border-radius: 24px; padding: 12px 18px; }
+.app-composer__count { position: absolute; right: 80px; top: -18px; }
+
+.app-details summary { cursor: pointer; font-weight: 700; min-height: 44px; display: flex; align-items: center; }
+
+/* Breathing circle */
+.app-breathe { width: 140px; height: 140px; border-radius: 50%; background: var(--rd-mood-heavy); transition: scale 4s ease-in-out; }
+.app-breathe--in { scale: 1; transition-duration: 4s; }
+.app-breathe--out { scale: 0.55; transition-duration: 6s; }
+@media (prefers-reduced-motion: reduce) { .app-breathe { scale: 0.8 !important; transition: none; } }
+
+/* A character's face in a clipped tile (bust crop draws outside its viewBox by design) */
+.app-face { flex: none; display: grid; place-items: start center; width: 72px; height: 72px; border-radius: calc(var(--rd-radius-lg) - var(--rd-space-3)); overflow: hidden; background: var(--rd-surface-raised); }
+.app-face svg { width: 112%; max-width: none; translate: 0 6%; }
