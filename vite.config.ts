@@ -2,7 +2,8 @@ import { defineConfig, loadEnv, type Plugin } from 'vite';
 import react from '@vitejs/plugin-react';
 import { fileURLToPath } from 'node:url';
 
-const ds = (p: string) => fileURLToPath(new URL(`../rough-draft-ds/${p}`, import.meta.url));
+// The design system is vendored into vendor/ (refresh with `npm run sync-ds`), so the app builds standalone.
+const ds = (p: string) => fileURLToPath(new URL(`./vendor/rough-draft-ds/${p}`, import.meta.url));
 
 /** Mounts Remi's streaming proxy on the dev + preview servers. Static hosting (GitHub Pages) has no server, so the app falls back to demo mode there. */
 function remiApi(): Plugin {
@@ -25,11 +26,9 @@ export default defineConfig(({ mode }) => {
     base: './',
     plugins: [react(), remiApi()],
     resolve: {
-      // The design system lives next door; consume its source directly.
       alias: { '@components': ds('components'), '@tokens': ds('design-tokens/build'), '@ds': ds('') },
-      // DS files resolve 'react' from their own node_modules; force one copy.
       dedupe: ['react', 'react-dom'],
     },
-    server: { port: 5250, strictPort: true, fs: { allow: ['..'] } },
+    server: { port: 5250, strictPort: true },
   };
 });

@@ -1,6 +1,8 @@
 # Rough Draft (app prototype)
 
-A self-guided mental health companion for 18–25s: check in, write it down, talk it out with Remi (an AI), and reach real people fast. Built on the [Rough Draft design system](../rough-draft-ds), which must sit next to this folder (`~/rough-draft-ds`).
+A self-guided mental health companion for 18–25s: check in, write it down, talk it out with Remi (an AI), and reach real people fast. Built on the [Rough Draft design system](https://github.com/daverich-jpg/rough-draft-ds), **vendored** into `vendor/rough-draft-ds/` so this repo builds on its own. After changing the design system (cloned next door at `../rough-draft-ds`), run `npm run sync-ds`.
+
+Live (demo mode): https://daverich-jpg.github.io/rough-draft-app/
 
 ```bash
 npm install
@@ -27,6 +29,7 @@ The key is read by the Vite server only (`server/remi.ts`) and never sent to the
 | `src/ai/remi.ts` | Streaming client + demo fallback |
 | `server/` | Claude proxy and Remi's system prompt |
 | `src/state/` | Local store (localStorage), helplines, hash router |
+| `vendor/rough-draft-ds/` | Vendored design system (components + built tokens). Don't edit; run `npm run sync-ds` |
 | `DESIGN.md` | UX decision records, risks, research questions |
 
 ⚑ Prototype only. See DESIGN.md → "Risks and things that must happen before real users" before putting this in front of anyone in distress.
